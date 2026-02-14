@@ -16,7 +16,6 @@ itsdangerous==2.2.0
 click==8.1.7
 werkzeug==3.0.3
 webdriver-manager==4.0.1
-packaging==23.1
 typing-extensions==4.11.0
 attrs==23.2.0
 h11==0.14.0
@@ -28,4 +27,4 @@ trio==0.25.0
 trio-websocket==0.11.1
 wsproto==1.2.0
 streamlit==1.26.0
-pillow==12.1.1
+pillow>=12.1.1
