@@ -1,0 +1,218 @@
+[
+  {
+    "scan_id": "296419b4-9701-44ff-87c1-52784799d958",
+    "target_url": "https://www.youtube.com/?authuser=0",
+    "status": "completed",
+    "start_time": "2026-02-14T20:54:02.976779",
+    "scan_types": [
+      "recon",
+      "vulnerabilities",
+      "browser"
+    ],
+    "findings": [
+      {
+        "type": "info",
+        "severity": "info",
+        "title": "Target Response",
+        "description": "Target responded with status code 200",
+        "details": {
+          "status_code": 200,
+          "content_length": 689251,
+          "response_time": 0.614497,
+          "server": "ESF",
+          "content_type": "text/html; charset=utf-8"
+        }
+      },
+      {
+        "type": "security_header",
+        "severity": "info",
+        "title": "Strict-Transport-Security Present",
+        "description": "Strict-Transport-Security header is properly configured",
+        "details": {
+          "header": "Strict-Transport-Security",
+          "value": "max-age=31536000",
+          "present": true
+        }
+      },
+      {
+        "type": "security_header",
+        "severity": "info",
+        "title": "Content-Security-Policy Present",
+        "description": "Content-Security-Policy header is properly configured",
+        "details": {
+          "header": "Content-Security-Policy",
+          "value": "require-trusted-types-for 'script'",
+          "present": true
+        }
+      },
+      {
+        "type": "security_header",
+        "severity": "info",
+        "title": "X-Frame-Options Present",
+        "description": "X-Frame-Options header is properly configured",
+        "details": {
+          "header": "X-Frame-Options",
+          "value": "SAMEORIGIN",
+          "present": true
+        }
+      },
+      {
+        "type": "security_header",
+        "severity": "info",
+        "title": "X-Content-Type-Options Present",
+        "description": "X-Content-Type-Options header is properly configured",
+        "details": {
+          "header": "X-Content-Type-Options",
+          "value": "nosniff",
+          "present": true
+        }
+      },
+      {
+        "type": "security_header",
+        "severity": "low",
+        "title": "Missing Referrer-Policy",
+        "description": "Referrer-Policy missing - referrer information may leak",
+        "details": {
+          "header": "Referrer-Policy",
+          "present": false
+        }
+      },
+      {
+        "type": "security_header",
+        "severity": "info",
+        "title": "Permissions-Policy Present",
+        "description": "Permissions-Policy header is properly configured",
+        "details": {
+          "header": "Permissions-Policy",
+          "value": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+          "present": true
+        }
+      },
+      {
+        "type": "error",
+        "severity": "info",
+        "title": "Selenium Scan Error",
+        "description": "Error during browser scan: Failed to initialize Chrome driver: [WinError 193] %1 is not a valid Win32 application",
+        "details": {}
+      }
+    ],
+    "stats": {
+      "total_requests": 8,
+      "vulnerabilities_found": 0,
+      "critical": 0,
+      "high": 0,
+      "medium": 0,
+      "low": 1,
+      "info": 7
+    },
+    "current_message": "Running browser automation tests...",
+    "last_update": "2026-02-14T20:54:15.233474",
+    "end_time": "2026-02-14T20:54:28.062114"
+  },
+  {
+    "scan_id": "6b478266-ec57-477f-8125-fa550ac10103",
+    "target_url": "https://courseweb.sliit.lk/",
+    "status": "completed",
+    "start_time": "2026-02-14T21:12:39.869387",
+    "scan_types": [
+      "recon",
+      "vulnerabilities",
+      "browser"
+    ],
+    "findings": [
+      {
+        "type": "info",
+        "severity": "info",
+        "title": "Target Response",
+        "description": "Target responded with status code 200",
+        "details": {
+          "status_code": 200,
+          "content_length": 119776,
+          "response_time": 1.209679,
+          "server": "nginx/1.14.1",
+          "content_type": "text/html; charset=utf-8"
+        }
+      },
+      {
+        "type": "security_header",
+        "severity": "medium",
+        "title": "Missing Strict-Transport-Security",
+        "description": "HSTS header missing - site vulnerable to SSL stripping attacks",
+        "details": {
+          "header": "Strict-Transport-Security",
+          "present": false
+        }
+      },
+      {
+        "type": "security_header",
+        "severity": "medium",
+        "title": "Missing Content-Security-Policy",
+        "description": "CSP header missing - increases XSS attack surface",
+        "details": {
+          "header": "Content-Security-Policy",
+          "present": false
+        }
+      },
+      {
+        "type": "security_header",
+        "severity": "info",
+        "title": "X-Frame-Options Present",
+        "description": "X-Frame-Options header is properly configured",
+        "details": {
+          "header": "X-Frame-Options",
+          "value": "sameorigin",
+          "present": true
+        }
+      },
+      {
+        "type": "security_header",
+        "severity": "low",
+        "title": "Missing X-Content-Type-Options",
+        "description": "X-Content-Type-Options missing - browser may MIME-sniff content",
+        "details": {
+          "header": "X-Content-Type-Options",
+          "present": false
+        }
+      },
+      {
+        "type": "security_header",
+        "severity": "low",
+        "title": "Missing Referrer-Policy",
+        "description": "Referrer-Policy missing - referrer information may leak",
+        "details": {
+          "header": "Referrer-Policy",
+          "present": false
+        }
+      },
+      {
+        "type": "security_header",
+        "severity": "info",
+        "title": "Missing Permissions-Policy",
+        "description": "Permissions-Policy missing - browser features not restricted",
+        "details": {
+          "header": "Permissions-Policy",
+          "present": false
+        }
+      },
+      {
+        "type": "error",
+        "severity": "info",
+        "title": "Selenium Scan Error",
+        "description": "Error during browser scan: Failed to initialize Chrome driver: [WinError 193] %1 is not a valid Win32 application",
+        "details": {}
+      }
+    ],
+    "stats": {
+      "total_requests": 8,
+      "vulnerabilities_found": 2,
+      "critical": 0,
+      "high": 0,
+      "medium": 2,
+      "low": 2,
+      "info": 4
+    },
+    "current_message": "Running browser automation tests...",
+    "last_update": "2026-02-14T21:12:47.461181",
+    "end_time": "2026-02-14T21:12:49.983770"
+  }
+]

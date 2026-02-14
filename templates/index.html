@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Application Security Tester</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --primary-light: #818cf8;
+            --critical: #ef4444;
+            --high: #f97316;
+            --medium: #eab308;
+            --low: #22c55e;
+            --info: #3b82f6;
+            --bg-gradient-start: #0f172a;
+            --bg-gradient-end: #1e293b;
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --border-color: #e2e8f0;
+        }
+        
+        [data-theme="dark"] {
+            --bg-gradient-start: #020617;
+            --bg-gradient-end: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.95);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --border-color: #334155;
+        }
+        
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            font-family: 'Inter', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+            min-height: 100vh;
+            transition: all 0.3s ease;
+        }
+        
+        .main-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+        
+        /* Glass Card */
+        .glass-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            margin-bottom: 24px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        [data-theme="dark"] .glass-card {
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+        
+        .glass-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Header */
+        .app-header {
+            text-align: center;
+            padding: 40px 20px 32px;
+            position: relative;
+        }
+        
+        .app-header h1 {
+            font-size: 2.75rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 12px;
+            letter-spacing: -0.02em;
+        }
+        
+        .app-header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            font-weight: 400;
+        }
+        
+        /* Theme Toggle */
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
+            padding: 10px 16px;
+            cursor: pointer;
+            color: var(--text-primary);
+            font-size: 14px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.05);
+        }
+        
+        /* Section Headers */
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 24px 28px;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(118, 75, 162, 0.05) 100%);
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .section-number {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 16px;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+        }
+        
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        
+        .card-body {
+            padding: 28px;
+        }
+        
+        /* Input Styles */
+        .input-wrapper {
+            position: relative;
+        }
+        
+        .modern-input {
+            width: 100%;
+            padding: 16px 20px 16px 52px;
+            border: 2px solid var(--border-color);
+            border-radius: 16px;
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--text-primary);
+            background: var(--card-bg);
+            transition: all 0.3s ease;
+        }
+        
+        .modern-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+        }
+        
+        .input-icon {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary);
+            font-size: 20px;
+        }
+        
+        .input-hint {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 10px;
+            color: var(--text-secondary);
+            font-size: 13px;
+        }
+        
+        /* Option Cards */
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+        
+        @media (max-width: 768px) {
+            .options-grid { grid-template-columns: 1fr; }
+        }
+        
+        .option-card {
+            position: relative;
+            border: 2px solid var(--border-color);
+            border-radius: 16px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            background: var(--card-bg);
+        }
+        
+        .option-card:hover {
+            border-color: var(--primary-light);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.15);
+        }
+        
+        .option-card.selected {
+            border-color: var(--primary);
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.08) 0%, rgba(118, 75, 162, 0.04) 100%);
+        }
+        
+        .option-card.selected::after {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 24px;
+            height: 24px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+        
+        .option-card input {
+            display: none;
+        }
+        
+        .option-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .icon-recon { background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); color: #1d4ed8; }
+        .icon-vuln { background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%); color: #dc2626; }
+        .icon-browser { background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); color: #059669; }
+        .icon-burp { background: linear-gradient(135deg, #ffedd5 0%, #fed7aa 100%); color: #ea580c; }
+        
+        .option-content h4 {
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+            font-size: 1rem;
+        }
+        
+        .option-content p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+        
+        /* Scan Button */
+        .scan-button-container {
+            text-align: center;
+            padding: 32px;
+        }
+        
+        .btn-scan {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            padding: 18px 56px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-scan::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .btn-scan:hover::before {
+            left: 100%;
+        }
+        
+        .btn-scan:hover:not(:disabled) {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(99, 102, 241, 0.5);
+        }
+        
+        .btn-scan:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .btn-scan i {
+            font-size: 1.2rem;
+        }
+        
+        /* Loading */
+        .loading-container {
+            text-align: center;
+            padding: 48px 32px;
+        }
+        
+        .spinner-modern {
+            width: 80px;
+            height: 80px;
+            border: 4px solid var(--border-color);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 24px;
+            position: relative;
+        }
+        
+        .spinner-modern::after {
+            content: '';
+            position: absolute;
+            top: -8px;
+            left: -8px;
+            right: -8px;
+            bottom: -8px;
+            border: 2px solid transparent;
+            border-top-color: var(--primary-light);
+            border-radius: 50%;
+            animation: spin 2s linear infinite reverse;
+        }
+        
+        @keyframes spin { to { transform: rotate(360deg); } }
+        
+        .loading-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+        
+        .loading-status {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            margin-bottom: 24px;
+        }
+        
+        .progress-wrapper {
+            max-width: 450px;
+            margin: 0 auto;
+            background: var(--border-color);
+            height: 10px;
+            border-radius: 5px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+            border-radius: 5px;
+            transition: width 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        /* Results Stats */
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px 28px;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(118, 75, 162, 0.05) 100%);
+            border-bottom: 1px solid var(--border-color);
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 12px;
+            margin: 24px 0;
+        }
+        
+        @media (max-width: 768px) {
+            .stats-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+        
+        .stat-card {
+            text-align: center;
+            padding: 20px 12px;
+            border-radius: 16px;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-4px);
+        }
+        
+        .stat-card.critical { background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.3); }
+        .stat-card.critical::before { background: var(--critical); }
+        .stat-card.high { background: rgba(249, 115, 22, 0.1); border-color: rgba(249, 115, 22, 0.3); }
+        .stat-card.high::before { background: var(--high); }
+        .stat-card.medium { background: rgba(234, 179, 8, 0.1); border-color: rgba(234, 179, 8, 0.3); }
+        .stat-card.medium::before { background: var(--medium); }
+        .stat-card.low { background: rgba(34, 197, 94, 0.1); border-color: rgba(34, 197, 94, 0.3); }
+        .stat-card.low::before { background: var(--low); }
+        .stat-card.info { background: rgba(59, 130, 246, 0.1); border-color: rgba(59, 130, 246, 0.3); }
+        .stat-card.info::before { background: var(--info); }
+        
+        .stat-number {
+            font-size: 2.25rem;
+            font-weight: 800;
+            line-height: 1;
+        }
+        
+        .stat-number.critical { color: var(--critical); }
+        .stat-number.high { color: var(--high); }
+        .stat-number.medium { color: var(--medium); }
+        .stat-number.low { color: var(--low); }
+        .stat-number.info { color: var(--info); }
+        
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-top: 6px;
+            font-weight: 600;
+        }
+        
+        /* Target Info Bar */
+        .target-info {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px 20px;
+            background: rgba(99, 102, 241, 0.08);
+            border-radius: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .target-info-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .target-info-label {
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: 500;
+        }
+        
+        .target-info-value {
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 14px;
+        }
+        
+        /* Download Buttons */
+        .download-buttons {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        
+        .btn-download {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid var(--border-color);
+            background: var(--card-bg);
+            color: var(--text-primary);
+        }
+        
+        .btn-download:hover {
+            border-color: var(--primary);
+            background: rgba(99, 102, 241, 0.05);
+            transform: translateY(-2px);
+        }
+        
+        /* Finding Cards */
+        .finding-card {
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 16px;
+            border-left: 4px solid;
+            background: var(--card-bg);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .finding-card:hover {
+            transform: translateX(8px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        [data-theme="dark"] .finding-card:hover {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .finding-card.critical { border-left-color: var(--critical); background: rgba(239, 68, 68, 0.05); }
+        .finding-card.high { border-left-color: var(--high); background: rgba(249, 115, 22, 0.05); }
+        .finding-card.medium { border-left-color: var(--medium); background: rgba(234, 179, 8, 0.05); }
+        .finding-card.low { border-left-color: var(--low); background: rgba(34, 197, 94, 0.05); }
+        .finding-card.info { border-left-color: var(--info); background: rgba(59, 130, 246, 0.05); }
+        
+        .finding-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        
+        .severity-badge {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .severity-badge.critical { background: var(--critical); color: white; }
+        .severity-badge.high { background: var(--high); color: white; }
+        .severity-badge.medium { background: var(--medium); color: white; }
+        .severity-badge.low { background: var(--low); color: white; }
+        .severity-badge.info { background: var(--info); color: white; }
+        
+        .finding-title {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--text-primary);
+        }
+        
+        .finding-desc {
+            color: var(--text-secondary);
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+        
+        .finding-type {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: var(--text-secondary);
+            background: var(--border-color);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+        
+        .remediation-box {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 16px;
+        }
+        
+        .remediation-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #059669;
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        
+        .remediation-text {
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        /* History */
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 20px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            margin-bottom: 12px;
+            transition: all 0.3s ease;
+        }
+        
+        .history-item:hover {
+            border-color: var(--primary-light);
+            transform: translateX(4px);
+        }
+        
+        .history-url {
+            font-weight: 700;
+            color: var(--text-primary);
+            font-size: 15px;
+        }
+        
+        .history-meta {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+        
+        .history-stats {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .history-count {
+            font-size: 13px;
+            font-weight: 700;
+        }
+        
+        .status-badge {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+        
+        .status-badge.completed { background: #d1fae5; color: #065f46; }
+        .status-badge.running { background: #dbeafe; color: #1e40af; }
+        .status-badge.error { background: #fee2e2; color: #991b1b; }
+        
+        .hidden { display: none; }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 48px 32px;
+            color: var(--text-secondary);
+        }
+        
+        .empty-state i {
+            font-size: 64px;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+        
+        .empty-state h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+        
+        /* Animation */
+        .fade-in-up {
+            animation: fadeInUp 0.5s ease forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <!-- App Header -->
+        <div class="app-header">
+            <button class="theme-toggle" onclick="toggleTheme()">
+                <i class="fas fa-moon"></i>
+                <span>Dark Mode</span>
+            </button>
+            <h1><i class="fas fa-shield-alt"></i> Web App Security Tester</h1>
+            <p style="color: white;">Advanced vulnerability scanner powered by Requests, Selenium & Burp Suite</p>
+        </div>
+        
+        <!-- Step 1: Target URL -->
+        <div class="glass-card fade-in-up" style="animation-delay: 0.1s;">
+            <div class="section-header">
+                <div class="section-number">1</div>
+                <div class="section-title">Enter Target URL</div>
+            </div>
+            <div class="card-body">
+                <div class="input-wrapper">
+                    <i class="fas fa-globe input-icon"></i>
+                    <input type="url" id="targetUrl" class="modern-input" 
+                           placeholder="https://example.com" 
+                           value="http://testphp.vulnweb.com">
+                </div>
+                <div class="input-hint">
+                    <i class="fas fa-info-circle"></i>
+                    Enter the full URL including http:// or https:// protocol
+                </div>
+            </div>
+        </div>
+        
+        <!-- Step 2: Scan Options -->
+        <div class="glass-card fade-in-up" style="animation-delay: 0.2s;">
+            <div class="section-header">
+                <div class="section-number">2</div>
+                <div class="section-title">Select Scan Modules</div>
+            </div>
+            <div class="card-body">
+                <div class="options-grid">
+                    <label class="option-card selected" onclick="toggleOption(this)">
+                        <input type="checkbox" id="checkRecon" checked>
+                        <div class="option-icon icon-recon">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <div class="option-content">
+                            <h4>Reconnaissance</h4>
+                            <p>Detect server info, security headers, technology stack</p>
+                        </div>
+                    </label>
+                    
+                    <label class="option-card selected" onclick="toggleOption(this)">
+                        <input type="checkbox" id="checkVuln" checked>
+                        <div class="option-icon icon-vuln">
+                            <i class="fas fa-bug"></i>
+                        </div>
+                        <div class="option-content">
+                            <h4>Vulnerability Scan</h4>
+                            <p>Test for XSS, SQL Injection, CSRF, Open Redirect</p>
+                        </div>
+                    </label>
+                    
+                    <label class="option-card selected" onclick="toggleOption(this)">
+                        <input type="checkbox" id="checkBrowser" checked>
+                        <div class="option-icon icon-browser">
+                            <i class="fas fa-chrome"></i>
+                        </div>
+                        <div class="option-content">
+                            <h4>Browser Automation</h4>
+                            <p>DOM XSS, mixed content, client-side storage tests</p>
+                        </div>
+                    </label>
+                    
+                    <label class="option-card" onclick="toggleOption(this)">
+                        <input type="checkbox" id="checkBurp">
+                        <div class="option-icon icon-burp">
+                            <i class="fas fa-network-wired"></i>
+                        </div>
+                        <div class="option-content">
+                            <h4>Burp Suite Proxy</h4>
+                            <p>Route traffic through Burp at 127.0.0.1:8080</p>
+                        </div>
+                    </label>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Step 3: Start Scan -->
+        <div class="glass-card fade-in-up" style="animation-delay: 0.3s;">
+            <div class="scan-button-container">
+                <button id="scanBtn" class="btn-scan" onclick="startScan()">
+                    <i class="fas fa-play"></i>
+                    Start Security Scan
+                </button>
+                <p style="color: var(--text-secondary); font-size: 14px; margin-top: 16px;">
+                    <i class="fas fa-clock" style="margin-right: 6px;"></i>
+                    Estimated time: 1-3 minutes depending on target complexity
+                </p>
+            </div>
+        </div>
+        
+        <!-- Loading Section -->
+        <div id="loadingSection" class="glass-card hidden">
+            <div class="loading-container">
+                <div class="spinner-modern"></div>
+                <div class="loading-text">Scanning in Progress</div>
+                <div class="loading-status" id="scanStatus">Initializing scan...</div>
+                <div class="progress-wrapper">
+                    <div id="progressBar" class="progress-fill" style="width: 0%"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Results Section -->
+        <div id="resultsSection" class="hidden">
+            <!-- Summary Card -->
+            <div class="glass-card">
+                <div class="results-header">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <i class="fas fa-chart-pie" style="font-size: 24px; color: var(--primary);"></i>
+                        <div class="section-title" style="margin: 0;">Scan Results</div>
+                    </div>
+                    <span id="scanStatusBadge" class="status-badge completed">Completed</span>
+                </div>
+                <div class="card-body">
+                    <div class="target-info">
+                        <div class="target-info-item">
+                            <span class="target-info-label"><i class="fas fa-bullseye" style="margin-right: 6px;"></i>Target:</span>
+                            <span class="target-info-value" id="resultTarget">-</span>
+                        </div>
+                        <div class="target-info-item">
+                            <span class="target-info-label"><i class="fas fa-fingerprint" style="margin-right: 6px;"></i>Scan ID:</span>
+                            <span class="target-info-value" id="resultScanId">-</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-card critical">
+                            <div class="stat-number critical" id="statCritical">0</div>
+                            <div class="stat-label">Critical</div>
+                        </div>
+                        <div class="stat-card high">
+                            <div class="stat-number high" id="statHigh">0</div>
+                            <div class="stat-label">High</div>
+                        </div>
+                        <div class="stat-card medium">
+                            <div class="stat-number medium" id="statMedium">0</div>
+                            <div class="stat-label">Medium</div>
+                        </div>
+                        <div class="stat-card low">
+                            <div class="stat-number low" id="statLow">0</div>
+                            <div class="stat-label">Low</div>
+                        </div>
+                        <div class="stat-card info">
+                            <div class="stat-number info" id="statInfo">0</div>
+                            <div class="stat-label">Info</div>
+                        </div>
+                    </div>
+                    
+                    <div class="download-buttons">
+                        <button class="btn-download" onclick="downloadReport('pdf')">
+                            <i class="fas fa-file-pdf" style="color: #dc2626;"></i>
+                            Download PDF
+                        </button>
+                        <button class="btn-download" onclick="downloadReport('html')">
+                            <i class="fas fa-file-code" style="color: #2563eb;"></i>
+                            Download HTML
+                        </button>
+                        <button class="btn-download" onclick="downloadReport('json')">
+                            <i class="fas fa-file-alt" style="color: #16a34a;"></i>
+                            Download JSON
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Findings List -->
+            <div class="glass-card">
+                <div class="section-header">
+                    <i class="fas fa-list-alt" style="font-size: 20px; color: var(--primary);"></i>
+                    <div class="section-title">Detailed Findings</div>
+                </div>
+                <div class="card-body">
+                    <div id="findingsList"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- History Section -->
+        <div class="glass-card fade-in-up" style="animation-delay: 0.4s;">
+            <div class="section-header">
+                <i class="fas fa-history" style="font-size: 20px; color: var(--primary);"></i>
+                <div class="section-title">Recent Scans</div>
+            </div>
+            <div class="card-body">
+                <div id="historyList">
+                    <div class="empty-state">
+                        <i class="fas fa-clipboard-list"></i>
+                        <h3>No Scans Yet</h3>
+                        <p>Run your first security scan to see results here</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let currentScanId = null;
+        let statusCheckInterval = null;
+        
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            html.setAttribute('data-theme', newTheme);
+            
+            const btn = document.querySelector('.theme-toggle');
+            btn.innerHTML = newTheme === 'dark' 
+                ? '<i class="fas fa-sun"></i><span>Light Mode</span>'
+                : '<i class="fas fa-moon"></i><span>Dark Mode</span>';
+        }
+        
+        function toggleOption(element) {
+            const checkbox = element.querySelector('input');
+            checkbox.checked = !checkbox.checked;
+            element.classList.toggle('selected', checkbox.checked);
+        }
+        
+        async function startScan() {
+            const url = document.getElementById('targetUrl').value.trim();
+            if (!url) {
+                alert('Please enter a target URL');
+                return;
+            }
+            
+            if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                alert('URL must start with http:// or https://');
+                return;
+            }
+            
+            const scanTypes = [];
+            if (document.getElementById('checkRecon').checked) scanTypes.push('recon');
+            if (document.getElementById('checkVuln').checked) scanTypes.push('vulnerabilities');
+            if (document.getElementById('checkBrowser').checked) scanTypes.push('browser');
+            
+            if (scanTypes.length === 0) {
+                alert('Please select at least one scan option');
+                return;
+            }
+            
+            const useBurp = document.getElementById('checkBurp').checked;
+            
+            document.getElementById('loadingSection').classList.remove('hidden');
+            document.getElementById('resultsSection').classList.add('hidden');
+            document.getElementById('scanBtn').disabled = true;
+            document.getElementById('progressBar').style.width = '10%';
+            
+            try {
+                const response = await fetch('/api/scan', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        url: url,
+                        scan_types: scanTypes,
+                        use_burp: useBurp,
+                        use_selenium: document.getElementById('checkBrowser').checked
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+                
+                currentScanId = data.scan_id;
+                document.getElementById('scanStatus').textContent = 'Scan initialized...';
+                document.getElementById('progressBar').style.width = '25%';
+                
+                statusCheckInterval = setInterval(() => checkScanStatus(currentScanId), 2000);
+                
+            } catch (error) {
+                alert('Scan failed: ' + error.message);
+                document.getElementById('loadingSection').classList.add('hidden');
+                document.getElementById('scanBtn').disabled = false;
+            }
+        }
+        
+        async function checkScanStatus(scanId) {
+            try {
+                const response = await fetch(`/api/scan/status/${scanId}`);
+                const data = await response.json();
+                
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+                
+                const statusMsg = data.current_message || 'Scanning in progress...';
+                document.getElementById('scanStatus').textContent = statusMsg;
+                
+                let progress = 25;
+                if (data.status === 'running') progress = 60;
+                if (data.status === 'completed') progress = 100;
+                document.getElementById('progressBar').style.width = progress + '%';
+                
+                if (data.status === 'completed' || data.status === 'error') {
+                    clearInterval(statusCheckInterval);
+                    document.getElementById('loadingSection').classList.add('hidden');
+                    document.getElementById('scanBtn').disabled = false;
+                    
+                    if (data.status === 'completed') {
+                        displayResults(data);
+                    } else {
+                        alert('Scan error: ' + (data.error || 'Unknown error'));
+                    }
+                    
+                    loadHistory();
+                }
+                
+            } catch (error) {
+                console.error('Status check failed:', error);
+            }
+        }
+        
+        function displayResults(data) {
+            document.getElementById('resultsSection').classList.remove('hidden');
+            
+            document.getElementById('resultTarget').textContent = data.target_url;
+            document.getElementById('resultScanId').textContent = data.scan_id.substring(0, 8);
+            
+            const stats = data.stats || {};
+            document.getElementById('statCritical').textContent = stats.critical || 0;
+            document.getElementById('statHigh').textContent = stats.high || 0;
+            document.getElementById('statMedium').textContent = stats.medium || 0;
+            document.getElementById('statLow').textContent = stats.low || 0;
+            document.getElementById('statInfo').textContent = stats.info || 0;
+            
+            const findingsList = document.getElementById('findingsList');
+            findingsList.innerHTML = '';
+            
+            const findings = data.findings || [];
+            
+            const severityOrder = {critical: 0, high: 1, medium: 2, low: 3, info: 4};
+            findings.sort((a, b) => severityOrder[a.severity] - severityOrder[b.severity]);
+            
+            if (findings.length === 0) {
+                findingsList.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-check-circle" style="color: #22c55e;"></i>
+                        <h3>No Vulnerabilities Found</h3>
+                        <p>The scan completed successfully with no security issues detected</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            findings.forEach((finding, index) => {
+                const div = document.createElement('div');
+                div.className = `finding-card ${finding.severity} fade-in-up`;
+                div.style.animationDelay = (index * 0.05) + 's';
+                
+                let remediationHtml = '';
+                if (finding.remediation) {
+                    remediationHtml = `
+                        <div class="remediation-box">
+                            <div class="remediation-header">
+                                <i class="fas fa-check-circle"></i>
+                                Remediation
+                            </div>
+                            <div class="remediation-text">${finding.remediation}</div>
+                        </div>
+                    `;
+                }
+                
+                let detailsHtml = '';
+                if (finding.details && Object.keys(finding.details).length > 0) {
+                    const detailItems = Object.entries(finding.details)
+                        .slice(0, 3)
+                        .map(([k, v]) => {
+                            const val = typeof v === 'object' ? JSON.stringify(v).substring(0, 50) : String(v).substring(0, 50);
+                            return `<span class="finding-type">${k}: ${val}</span>`;
+                        })
+                        .join(' ');
+                    detailsHtml = `<div style="margin-top: 12px; display: flex; flex-wrap: wrap; gap: 8px;">${detailItems}</div>`;
+                }
+                
+                div.innerHTML = `
+                    <div class="finding-header">
+                        <span class="severity-badge ${finding.severity}">${finding.severity}</span>
+                        <span class="finding-title">${finding.title}</span>
+                    </div>
+                    <div class="finding-desc">${finding.description}</div>
+                    <span class="finding-type"><i class="fas fa-tag"></i> ${finding.type}</span>
+                    ${detailsHtml}
+                    ${remediationHtml}
+                `;
+                
+                findingsList.appendChild(div);
+            });
+            
+            document.getElementById('resultsSection').scrollIntoView({behavior: 'smooth'});
+        }
+        
+        async function downloadReport(format) {
+            if (!currentScanId) {
+                alert('No scan results available');
+                return;
+            }
+            window.open(`/api/report/${currentScanId}?format=${format}`, '_blank');
+        }
+        
+        async function loadHistory() {
+            try {
+                const response = await fetch('/api/history');
+                const history = await response.json();
+                
+                const historyList = document.getElementById('historyList');
+                
+                if (history.length === 0) {
+                    historyList.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-clipboard-list"></i>
+                            <h3>No Scans Yet</h3>
+                            <p>Run your first security scan to see results here</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                historyList.innerHTML = history.slice(-5).reverse().map(scan => {
+                    const stats = scan.stats || {};
+                    const statusClass = scan.status === 'completed' ? 'completed' : 
+                                       scan.status === 'error' ? 'error' : 'running';
+                    
+                    return `
+                        <div class="history-item">
+                            <div>
+                                <div class="history-url">${scan.target_url}</div>
+                                <div class="history-meta">${new Date(scan.start_time).toLocaleString()}</div>
+                            </div>
+                            <div class="history-stats">
+                                <span class="history-count" style="color: #ef4444;">${stats.critical || 0} Critical</span>
+                                <span class="history-count" style="color: #f97316;">${stats.high || 0} High</span>
+                                <span class="status-badge ${statusClass}">${scan.status}</span>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+                
+            } catch (error) {
+                console.error('Failed to load history:', error);
+            }
+        }
+        
+        loadHistory();
+    </script>
+</body>
+</html>
