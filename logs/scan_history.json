@@ -214,5 +214,281 @@
     "current_message": "Running browser automation tests...",
     "last_update": "2026-02-14T21:12:47.461181",
     "end_time": "2026-02-14T21:12:49.983770"
+  },
+  {
+    "scan_id": "9a4c2f6d-8c23-4adb-90cb-d69f28631268",
+    "target_url": "http://testphp.vulnweb.com",
+    "status": "completed",
+    "start_time": "2026-02-14T22:08:24.655290",
+    "scan_types": [
+      "recon",
+      "vulnerabilities",
+      "browser"
+    ],
+    "findings": [
+      {
+        "type": "info",
+        "severity": "info",
+        "title": "Target Response",
+        "description": "Target responded with status code 200",
+        "details": {
+          "status_code": 200,
+          "content_length": 4958,
+          "response_time": 0.836681,
+          "server": "nginx/1.19.0",
+          "content_type": "text/html; charset=UTF-8"
+        }
+      },
+      {
+        "type": "security_header",
+        "severity": "medium",
+        "title": "Missing Strict-Transport-Security",
+        "description": "HSTS header missing - site vulnerable to SSL stripping attacks",
+        "details": {
+          "header": "Strict-Transport-Security",
+          "present": false
+        }
+      },
+      {
+        "type": "security_header",
+        "severity": "medium",
+        "title": "Missing Content-Security-Policy",
+        "description": "CSP header missing - increases XSS attack surface",
+        "details": {
+          "header": "Content-Security-Policy",
+          "present": false
+        }
+      },
+      {
+        "type": "security_header",
+        "severity": "medium",
+        "title": "Missing X-Frame-Options",
+        "description": "X-Frame-Options missing - site may be vulnerable to clickjacking",
+        "details": {
+          "header": "X-Frame-Options",
+          "present": false
+        }
+      },
+      {
+        "type": "security_header",
+        "severity": "low",
+        "title": "Missing X-Content-Type-Options",
+        "description": "X-Content-Type-Options missing - browser may MIME-sniff content",
+        "details": {
+          "header": "X-Content-Type-Options",
+          "present": false
+        }
+      },
+      {
+        "type": "security_header",
+        "severity": "low",
+        "title": "Missing Referrer-Policy",
+        "description": "Referrer-Policy missing - referrer information may leak",
+        "details": {
+          "header": "Referrer-Policy",
+          "present": false
+        }
+      },
+      {
+        "type": "security_header",
+        "severity": "info",
+        "title": "Missing Permissions-Policy",
+        "description": "Permissions-Policy missing - browser features not restricted",
+        "details": {
+          "header": "Permissions-Policy",
+          "present": false
+        }
+      },
+      {
+        "type": "info",
+        "severity": "info",
+        "title": "Forms Detected",
+        "description": "Found 1 form(s) on the page",
+        "details": {
+          "form_count": 1
+        }
+      },
+      {
+        "type": "xss",
+        "severity": "high",
+        "title": "Stored/DOM XSS Vulnerability",
+        "description": "Potential XSS vulnerability found in form field \"searchFor\"",
+        "details": {
+          "form_action": "http://testphp.vulnweb.com/search.php?test=query",
+          "field": "searchFor",
+          "payload": "<script>alert(1)</script>",
+          "method": "post"
+        },
+        "remediation": "Implement proper input validation and output encoding. Sanitize all user input."
+      },
+      {
+        "type": "csrf",
+        "severity": "medium",
+        "title": "Missing CSRF Protection",
+        "description": "Form may lack CSRF protection: search.php?test=query",
+        "details": {
+          "form_action": "search.php?test=query",
+          "form_method": "post"
+        },
+        "remediation": "Implement CSRF tokens for all state-changing operations."
+      },
+      {
+        "type": "error",
+        "severity": "info",
+        "title": "Selenium Scan Error",
+        "description": "Error during browser scan: Failed to initialize Chrome driver: [WinError 193] %1 is not a valid Win32 application",
+        "details": {}
+      }
+    ],
+    "stats": {
+      "total_requests": 11,
+      "vulnerabilities_found": 5,
+      "critical": 0,
+      "high": 1,
+      "medium": 4,
+      "low": 2,
+      "info": 4
+    },
+    "current_message": "Running browser automation tests...",
+    "last_update": "2026-02-14T22:08:30.919865",
+    "end_time": "2026-02-14T22:08:33.268986"
+  },
+  {
+    "scan_id": "34785d6e-7ae0-4f8b-8c11-fd858d552da4",
+    "target_url": "http://testphp.vulnweb.com",
+    "status": "completed",
+    "start_time": "2026-02-14T22:08:52.139933",
+    "scan_types": [
+      "recon",
+      "vulnerabilities",
+      "browser"
+    ],
+    "findings": [
+      {
+        "type": "info",
+        "severity": "info",
+        "title": "Target Response",
+        "description": "Target responded with status code 200",
+        "details": {
+          "status_code": 200,
+          "content_length": 4958,
+          "response_time": 0.616099,
+          "server": "nginx/1.19.0",
+          "content_type": "text/html; charset=UTF-8"
+        }
+      },
+      {
+        "type": "security_header",
+        "severity": "medium",
+        "title": "Missing Strict-Transport-Security",
+        "description": "HSTS header missing - site vulnerable to SSL stripping attacks",
+        "details": {
+          "header": "Strict-Transport-Security",
+          "present": false
+        }
+      },
+      {
+        "type": "security_header",
+        "severity": "medium",
+        "title": "Missing Content-Security-Policy",
+        "description": "CSP header missing - increases XSS attack surface",
+        "details": {
+          "header": "Content-Security-Policy",
+          "present": false
+        }
+      },
+      {
+        "type": "security_header",
+        "severity": "medium",
+        "title": "Missing X-Frame-Options",
+        "description": "X-Frame-Options missing - site may be vulnerable to clickjacking",
+        "details": {
+          "header": "X-Frame-Options",
+          "present": false
+        }
+      },
+      {
+        "type": "security_header",
+        "severity": "low",
+        "title": "Missing X-Content-Type-Options",
+        "description": "X-Content-Type-Options missing - browser may MIME-sniff content",
+        "details": {
+          "header": "X-Content-Type-Options",
+          "present": false
+        }
+      },
+      {
+        "type": "security_header",
+        "severity": "low",
+        "title": "Missing Referrer-Policy",
+        "description": "Referrer-Policy missing - referrer information may leak",
+        "details": {
+          "header": "Referrer-Policy",
+          "present": false
+        }
+      },
+      {
+        "type": "security_header",
+        "severity": "info",
+        "title": "Missing Permissions-Policy",
+        "description": "Permissions-Policy missing - browser features not restricted",
+        "details": {
+          "header": "Permissions-Policy",
+          "present": false
+        }
+      },
+      {
+        "type": "info",
+        "severity": "info",
+        "title": "Forms Detected",
+        "description": "Found 1 form(s) on the page",
+        "details": {
+          "form_count": 1
+        }
+      },
+      {
+        "type": "xss",
+        "severity": "high",
+        "title": "Stored/DOM XSS Vulnerability",
+        "description": "Potential XSS vulnerability found in form field \"searchFor\"",
+        "details": {
+          "form_action": "http://testphp.vulnweb.com/search.php?test=query",
+          "field": "searchFor",
+          "payload": "<script>alert(1)</script>",
+          "method": "post"
+        },
+        "remediation": "Implement proper input validation and output encoding. Sanitize all user input."
+      },
+      {
+        "type": "csrf",
+        "severity": "medium",
+        "title": "Missing CSRF Protection",
+        "description": "Form may lack CSRF protection: search.php?test=query",
+        "details": {
+          "form_action": "search.php?test=query",
+          "form_method": "post"
+        },
+        "remediation": "Implement CSRF tokens for all state-changing operations."
+      },
+      {
+        "type": "error",
+        "severity": "info",
+        "title": "Selenium Scan Error",
+        "description": "Error during browser scan: Failed to initialize Chrome driver: [WinError 193] %1 is not a valid Win32 application",
+        "details": {}
+      }
+    ],
+    "stats": {
+      "total_requests": 11,
+      "vulnerabilities_found": 5,
+      "critical": 0,
+      "high": 1,
+      "medium": 4,
+      "low": 2,
+      "info": 4
+    },
+    "current_message": "Running browser automation tests...",
+    "last_update": "2026-02-14T22:08:57.876954",
+    "end_time": "2026-02-14T22:09:00.092856"
   }
 ]
