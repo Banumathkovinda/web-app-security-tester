@@ -16,7 +16,6 @@ itsdangerous==2.2.0
 click==8.1.7
 werkzeug==3.0.3
 webdriver-manager==4.0.1
-packaging==24.0
 typing-extensions==4.11.0
 attrs==23.2.0
 h11==0.14.0
