@@ -15,8 +15,14 @@ import threading
 import queue
 
 from .vulnerability_scanner import VulnerabilityScanner
-from .selenium_scanner import SeleniumScanner
 from .burp_integration import BurpIntegration
+
+try:
+    from .selenium_scanner import SeleniumScanner
+    SELENIUM_AVAILABLE = True
+except ImportError:
+    SELENIUM_AVAILABLE = False
+    SeleniumScanner = None
 
 
 class SecurityScanner:
@@ -27,7 +33,7 @@ class SecurityScanner:
         self.scan_history = []
         self.results_queue = queue.Queue()
         self.vuln_scanner = VulnerabilityScanner()
-        self.selenium_scanner = SeleniumScanner()
+        self.selenium_scanner = SeleniumScanner() if SELENIUM_AVAILABLE else None
         self.burp_integration = BurpIntegration()
         
     def scan(self, target_url: str, scan_types: List[str], 
@@ -101,7 +107,7 @@ class SecurityScanner:
                 all_findings.extend(vuln_results)
             
             # 3. Browser-based testing with Selenium
-            if use_selenium and ('browser' in scan_types or 'all' in scan_types):
+            if use_selenium and SELENIUM_AVAILABLE and ('browser' in scan_types or 'all' in scan_types):
                 self._update_status(scan_id, 'running', 'Running browser automation tests...')
                 browser_results = self.selenium_scanner.scan(target_url)
                 all_findings.extend(browser_results)
